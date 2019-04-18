@@ -1,0 +1,11 @@
+爬取豆瓣top50电影
+    <table>
+        <tr>
+            <th>电影名</th>
+        </tr>
+        {% for line in movie_list %}
+        <tr>
+            <td>{{line.name}}</td>
+        </tr>
+        {% endfor %}
+        </table>

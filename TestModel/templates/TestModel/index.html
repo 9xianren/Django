@@ -1,0 +1,9 @@
+{% extends 'TestModel/base.html' %}
+
+{% block title %}博客首页{% endblock %}
+
+{% block content %}
+    <a href="{%url 'TestModel:movie_show' %}">爬取豆瓣top50电影</a><br/>
+    <a href="{%url 'TestModel:phone_show' %}">selemiun动态爬取</a>
+    <div style="height: 440px; " ></div>
+{% endblock %}

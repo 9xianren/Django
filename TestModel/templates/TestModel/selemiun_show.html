@@ -1,0 +1,18 @@
+动态爬取京东手机数据
+<table>
+    <tr>
+        <th>link</th>
+        <th>name</th>
+        <th>price</th>
+        <th>comment</th>
+    </tr>
+    {% for line in phone_list %}
+    <tr>
+        <td>{{line.link}}</td>
+        <td>{{line.name}}</td>
+        <td>{{line.price}}</td>
+        <td>{{line.comment}}</td>
+    </tr>
+    <tr>
+    {% endfor %}
+</table>
