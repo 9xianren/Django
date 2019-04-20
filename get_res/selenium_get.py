@@ -40,7 +40,9 @@ class JdSpider():
             names = [item.text for item in names]
             comments = self.wait.until(EC.presence_of_all_elements_located((By.XPATH,'//div[@class="gl-i-wrap"]/div[5]/strong')))
             comments = [item.text for item in comments]
-            self.data = zip(links,prices,names,comments)
+            img_urls = self.wait.until(EC.presence_of_all_elements_located((By.XPATH,'//div[@class="gl-i-wrap"]/div[1]/a/img')))
+            img_urls = [item.get_attribute('src') for item in img_urls]
+            self.data = zip(links,prices,names,comments,img_urls)
         except selenium.common.exceptions.TimeoutException:
             print('parse_page: TimeoutException1')
             self.parse_page()
@@ -82,10 +84,10 @@ class JdSpider():
     def write_to_mysql(self):
         db=pymysql.connect("localhost","root","123456","test")
         cursor=db.cursor()
-        sql="INSERT INTO testmodel_phone(link,price,name,comment) VALUES (%s,%s,%s,%s)"
+        sql="INSERT INTO testmodel_phone(link,price,name,comment,img_url) VALUES (%s,%s,%s,%s,%s)"
         for item in self.data:
             for item in self.data:
-                cursor.execute(sql,(item[0],item[1],item[2],item[3]))
+                cursor.execute(sql,(item[0],item[1],item[2],item[3],item[4]))
                 db.commit()
             db.close()
 
@@ -100,13 +102,19 @@ class JdSpider():
         #self.open_file()
         self.open_browser()
         self.init_variable()
+        db=pymysql.connect("localhost","root","123456","test")
+        cursor=db.cursor()
+        sql="truncate table testmodel_phone"
+        cursor.execute(sql)
+        db.commit()
+        db.close()
         print('开始爬取')
         self.browser.get('https://search.jd.com/Search?keyword=%E6%89%8B%E6%9C%BA&enc=utf-8')
         time.sleep(1)
         self.browser.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         time.sleep(2)
         count = 0
-        while count!=10:
+        while count!=2:
             count += 1
             print('正在爬取第 ' + str(count) + ' 页......')
             self.parse_page()

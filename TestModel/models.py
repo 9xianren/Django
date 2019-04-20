@@ -43,6 +43,7 @@ class Entry(models.Model):
         verbose_name_plural = verbose_name
 
 class phone(models.Model):
+    img_url=models.CharField(max_length=128)
     link=models.CharField(max_length=128)
     price=models.CharField(max_length=128)
     name=models.CharField(max_length=128)
